@@ -1,0 +1,45 @@
+---
+title: "Ps_7"
+author: "Alex LaPolice"
+date: "11/14/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(dplyr)
+library(readr)
+library(janitor)
+library(fs)
+library(knitr)
+library(formattable)
+library(lubridate)
+library(date)
+library(foreign)
+library(kableExtra)
+library(scales)
+```
+
+
+
+```{r}
+download.file(url = "https://goo.gl/ZRCBda",
+              destfile = "2018-live-poll-results-master.zip",
+              mode = "wb")
+unzip("2018-live-poll-results-master.zip")
+
+
+
+
+ df <- fs::dir_ls("2018-live-poll-results-master/data") %>%
+   map_dfr(read_csv, .id = "source") %>% 
+   
+  mutate(state = toupper(str_sub(source, 51, 52))) %>%
+  mutate(office = toupper(str_sub(source, 53, 54))) %>%
+  mutate(state_dis = str_sub(source, 51, 54)) %>%
+  mutate(wave = str_sub(source, 55, 56))
+  
+
+```
+
